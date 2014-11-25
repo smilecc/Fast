@@ -15,11 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     MyGlobalShortCut/MyWinEventFilter.cpp \
-    MyGlobalShortCut/MyGlobalShortCut.cpp
+    MyGlobalShortCut/MyGlobalShortCut.cpp \
+    FastBin.cpp
 
 HEADERS  += mainwindow.h \
     MyGlobalShortCut/MyWinEventFilter.h \
-    MyGlobalShortCut/MyGlobalShortCut.h
+    MyGlobalShortCut/MyGlobalShortCut.h \
+    FastBin.h \
+    hz2py.h
 
 FORMS    += mainwindow.ui
 

@@ -2,16 +2,26 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>58</height>
+    <height>112</height>
    </rect>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="ic.qrc">
+    <normaloff>:/ic/f.png</normaloff>:/ic/f.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLineEdit" name="lineEdit">
@@ -32,8 +42,22 @@
      </font>
     </property>
    </widget>
+   <widget class="QListWidget" name="ProList">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>381</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="ic.qrc">
+     <normaloff>:/ic/exit.png</normaloff>:/ic/exit.png</iconset>
+   </property>
    <property name="text">
     <string>退出</string>
    </property>
@@ -46,8 +70,15 @@
     <string>设置</string>
    </property>
   </action>
+  <action name="actionDisplay">
+   <property name="text">
+    <string>显示</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="ic.qrc"/>
+ </resources>
  <connections/>
 </ui>

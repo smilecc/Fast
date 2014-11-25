@@ -1,6 +1,8 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "QMessageBox"
+#include "hz2py.h"
+#include "QDebug"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,23 +14,30 @@ MainWindow::MainWindow(QWidget *parent) :
     //创建QIcon对象，参数是图标资源，值为项目的资源文件中图标的地址
     QIcon icon(":/ic/f.png");
     trayiconMenu = new QMenu(this);
+
     //为托盘菜单添加菜单项
+    trayiconMenu->addAction(ui->actionDisplay);
     trayiconMenu->addAction(ui->actionSettings);
-    trayiconMenu->addAction(ui->actionExit);
-    //为托盘菜单添加分隔符
+    //分隔符
     trayiconMenu->addSeparator();
+    trayiconMenu->addAction(ui->actionExit);
+
     //将创建的QIcon对象作为系统托盘图标
     trayicon->setIcon(icon);
     //显示托盘图标
     trayicon->show();
     //设置系统托盘提示
-    trayicon->setToolTip(tr("托盘测试"));
+    trayicon->setToolTip("Fast");
     //将创建菜单作为系统托盘菜单
     trayicon->setContextMenu(trayiconMenu);
     //在系统托盘显示气泡消息提示
-    trayicon->showMessage(tr("hahaya"), "托盘测试", QSystemTrayIcon::Information, 5000);
+    trayicon->showMessage("Look here!!!", "I'm here!Fast does not shut!", QSystemTrayIcon::Information, 5000);
     //为系统托盘绑定单击信号的槽 即图标激活时
     connect(trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason)));
+
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +65,7 @@ void MainWindow::onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reaso
   case QSystemTrayIcon::DoubleClick:
       //恢复窗口显示
       this->setWindowState(Qt::WindowActive);
+      this->ishide = false;
       this->show();
       break;
   default:
@@ -76,4 +86,17 @@ void MainWindow::on_actionExit_triggered()
 {
     isExit = true;
     this->close();
+}
+
+void MainWindow::on_actionDisplay_triggered()
+{
+    this->ishide = false;
+    this->show();
+}
+
+void MainWindow::on_lineEdit_cursorPositionChanged(int arg1, int arg2)
+{
+    ui->ProList->clear();
+    qDebug()<<ui->lineEdit->text()<<endl;
+    ui->ProList->addItem(new QListWidgetItem(hz2py(ui->lineEdit->text().toLocal8Bit().data())));
 }

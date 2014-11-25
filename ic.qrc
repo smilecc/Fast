@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/ic">
         <file>f.png</file>
+        <file alias="exit.png">Img/exit.png</file>
     </qresource>
 </RCC>

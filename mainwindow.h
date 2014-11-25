@@ -30,6 +30,10 @@ private slots:
   void onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reason);
   void on_actionExit_triggered();
 
+  void on_actionDisplay_triggered();
+
+  void on_lineEdit_cursorPositionChanged(int arg1, int arg2);
+
 protected:
   void closeEvent(QCloseEvent *event);
 private:
