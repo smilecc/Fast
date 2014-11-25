@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/ic">
+        <file>f.png</file>
+    </qresource>
+</RCC>

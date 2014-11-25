@@ -22,3 +22,6 @@ HEADERS  += mainwindow.h \
     MyGlobalShortCut/MyGlobalShortCut.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    ic.qrc

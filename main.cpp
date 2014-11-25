@@ -13,9 +13,12 @@ int main(int argc, char *argv[])
     MyGlobalShortCut *shortcut = new MyGlobalShortCut("Alt+Space",&w);
     QObject::connect(shortcut,SIGNAL(activated()),&w,SLOT(activated()));
 
+
+
+    /*
     QSystemTrayIcon systray;
-    systray.setIcon(QIcon(":/f.ico"));
-    systray.setVisible(true);
+    systray.setIcon(QIcon(":/ic/f.png"));
+    systray.setVisible(true);*/
 
     return a.exec();
 }
