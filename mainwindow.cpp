@@ -1,8 +1,9 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "QMessageBox"
-#include "hz2py.h"
 #include "QDebug"
+#include "FastBin.h"
+#include "FastBin.cpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //为系统托盘绑定单击信号的槽 即图标激活时
     connect(trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason)));
 
-
+    m_fb.LoadPro();
 
 
 }
@@ -44,6 +45,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+//响应热键事件
 void MainWindow::activated()
 {
     //通过热键控制窗口的显示与隐藏
@@ -55,6 +57,7 @@ void MainWindow::activated()
         ishide = false;
     }
 }
+//用于响应托盘图标被双击的事件
 void MainWindow::onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reason)
 {
   switch(reason)
@@ -72,6 +75,7 @@ void MainWindow::onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reaso
       break;
   }
 }
+//用于响应程序被关闭的事件
 void MainWindow::closeEvent(QCloseEvent *event)
 {
   if(isExit) return;
@@ -82,21 +86,23 @@ void MainWindow::closeEvent(QCloseEvent *event)
       event->ignore();
   }
 }
+//用于响应菜单栏中的退出按钮
 void MainWindow::on_actionExit_triggered()
 {
     isExit = true;
     this->close();
 }
-
+//用于响应菜单栏中的显示按钮
 void MainWindow::on_actionDisplay_triggered()
 {
     this->ishide = false;
     this->show();
 }
 
+//编辑框输入事件的响应
 void MainWindow::on_lineEdit_cursorPositionChanged(int arg1, int arg2)
 {
+    FastBin FB;
     ui->ProList->clear();
-    qDebug()<<ui->lineEdit->text()<<endl;
-    ui->ProList->addItem(new QListWidgetItem(hz2py(ui->lineEdit->text().toLocal8Bit().data())));
+    ui->ProList->addItem(new QListWidgetItem(FB.topy(ui->lineEdit->text())));
 }

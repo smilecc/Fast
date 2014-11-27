@@ -21,8 +21,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     MyGlobalShortCut/MyWinEventFilter.h \
     MyGlobalShortCut/MyGlobalShortCut.h \
-    FastBin.h \
-    hz2py.h
+    FastBin.h
 
 FORMS    += mainwindow.ui
 

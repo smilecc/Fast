@@ -5,6 +5,7 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QCloseEvent>
+#include "FastBin.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,7 @@ private:
     Ui::MainWindow *ui;
     bool ishide;
     bool isExit;
+    FastBin m_fb;
 private slots:
   void onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reason);
   void on_actionExit_triggered();
