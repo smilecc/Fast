@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ishide(false),isExit(false)
 {
     ui->setupUi(this);
+    //初始化界面
+
     trayicon = new QSystemTrayIcon(this);
     //创建QIcon对象，参数是图标资源，值为项目的资源文件中图标的地址
     QIcon icon(":/ic/f.png");
@@ -32,19 +34,40 @@ MainWindow::MainWindow(QWidget *parent) :
     //将创建菜单作为系统托盘菜单
     trayicon->setContextMenu(trayiconMenu);
     //在系统托盘显示气泡消息提示
-    trayicon->showMessage("Look here!!!", "I'm here!Fast does not shut!", QSystemTrayIcon::Information, 5000);
+    trayicon->showMessage("Loading...", "Loading Program...", QSystemTrayIcon::Information, 2000);
     //为系统托盘绑定单击信号的槽 即图标激活时
     connect(trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason)));
 
-    m_fb.LoadPro();
-
-
+    m_fb.LoadPro(); //初始化载入 LoadProgram
+    trayicon->showMessage("Loading...", "Loaded successfully", QSystemTrayIcon::Information, 2000);
+    ui->lineEdit->installEventFilter(this); //绑定事件过滤器
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+//事件过滤器
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+
+     if (watched==ui->lineEdit)         //判断控件 lineEdit
+     {
+            if (event->type() == QEvent::KeyPress){
+                    QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+                        if (keyEvent->key() == Qt::Key_Down){ //响应↑事件
+                            ui->ProList->setCurrentRow(ui->ProList->currentRow()+1);
+                        }else if (keyEvent->key() == Qt::Key_Up){ //响应↑事件
+                            ui->ProList->setCurrentRow(ui->ProList->currentRow()-1);
+                        }
+                    }
+
+     }
+ return QWidget::eventFilter(watched,event);     // 将事件交给上层对话框
+}
+
+
 //响应热键事件
 void MainWindow::activated()
 {
@@ -54,6 +77,7 @@ void MainWindow::activated()
         ishide = true;
     }else{
         this->show();
+        ui->lineEdit->setFocus();
         ishide = false;
     }
 }
@@ -70,6 +94,7 @@ void MainWindow::onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reaso
       this->setWindowState(Qt::WindowActive);
       this->ishide = false;
       this->show();
+      ui->lineEdit->setFocus();
       break;
   default:
       break;
@@ -83,6 +108,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
   {
       this->ishide = true;
       hide();
+      trayicon->showMessage("FastRun", "I'm HERE!", QSystemTrayIcon::Information, 2000);
       event->ignore();
   }
 }
@@ -97,12 +123,49 @@ void MainWindow::on_actionDisplay_triggered()
 {
     this->ishide = false;
     this->show();
+    ui->lineEdit->setFocus();
 }
 
 //编辑框输入事件的响应
 void MainWindow::on_lineEdit_cursorPositionChanged(int arg1, int arg2)
 {
-    FastBin FB;
     ui->ProList->clear();
-    ui->ProList->addItem(new QListWidgetItem(FB.topy(ui->lineEdit->text())));
+    m_proList.clear();
+    qDebug()<<ui->lineEdit->text();
+    m_proList = m_fb.findPro(ui->lineEdit->text());
+    for(int i=0;i<m_proList.size();i++){
+        ui->ProList->addItem(new QListWidgetItem(m_proList[i].icon,m_proList[i].name));
+    }
+    switch(m_proList.size()){
+        case 0:
+            this->setGeometry(this->geometry().x(),this->geometry().y(),400,60);
+            ui->ProList->setGeometry(10,60,381,0);
+            break;
+        case 1:
+            this->setGeometry(this->geometry().x(),this->geometry().y(),400,70+1*40);
+            ui->ProList->setGeometry(10,60,381,40);
+            break;
+        case 2:
+            this->setGeometry(this->geometry().x(),this->geometry().y(),400,70+2*40);
+            ui->ProList->setGeometry(10,60,381,80);
+            break;
+        case 3:
+            this->setGeometry(this->geometry().x(),this->geometry().y(),400,70+3*40);
+            ui->ProList->setGeometry(10,60,381,120);
+            break;
+        default:
+            this->setGeometry(this->geometry().x(),this->geometry().y(),400,70+4*40);
+            ui->ProList->setGeometry(10,60,381,160);
+    }
+}
+//响应enter事件
+void MainWindow::on_lineEdit_returnPressed()
+{
+    qDebug()<<"press enter";
+    if(this->m_proList.size() >= ui->ProList->currentRow()){
+        if(this->m_fb.runPro(this->m_proList[ui->ProList->currentRow()].path)){
+            this->ishide = true;
+            hide();
+        }
+    }
 }

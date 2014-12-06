@@ -8,31 +8,29 @@
 #include <QString>
 #include <fstream>
 #include <windows.h>
-
-#include "atlbase.h"
-#include "atlstr.h"
-
-#pragma comment(lib,"Advapi32.lib")
+#include <QIcon>
+#include <QFileIconProvider>
+#include <QDir>
+#include <QDesktopServices>
 
 #define MAX_BUF 1024
 
 struct SoftInfo{
     QString name;
     QString path;
+    QIcon icon;
 };
 
 class FastBin{
 public:
-
-    void run(QString command);
-    QString topy(QString qsChinese);
     bool LoadPro();
+    bool runPro(QString Path);
+    QString topy(QString qsChinese);
+    std::vector<SoftInfo> findPro(QString ProName);
 private:
-    char convert(wchar_t n);
-    bool In(wchar_t start, wchar_t end, wchar_t code);
-    void searchDir(QString sPath);
+    bool searchDir(QString sPath);
 public:
-    std::vector<SoftInfo> m_SoftInfo;
+    std::vector<SoftInfo> m_SoftInfo; //用于存储软件的信息
 };
 
 

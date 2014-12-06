@@ -1,75 +1,68 @@
-#include "QDir"
-
-void FastBin::run(QString command){
-
-}
-
-char FastBin::convert(wchar_t n)
-{
-    if (In(0xB0A1, 0xB0C4, n))   return   'a';
-    if (In(0XB0C5, 0XB2C0, n))   return   'b';
-    if (In(0xB2C1, 0xB4ED, n))   return   'c';
-    if (In(0xB4EE, 0xB6E9, n))   return   'd';
-    if (In(0xB6EA, 0xB7A1, n))   return   'e';
-    if (In(0xB7A2, 0xB8c0, n))   return   'f';
-    if (In(0xB8C1, 0xB9FD, n))   return   'g';
-    if (In(0xB9FE, 0xBBF6, n))   return   'h';
-    if (In(0xBBF7, 0xBFA5, n))   return   'j';
-    if (In(0xBFA6, 0xC0AB, n))   return   'k';
-    if (In(0xC0AC, 0xC2E7, n))   return   'l';
-    if (In(0xC2E8, 0xC4C2, n))   return   'm';
-    if (In(0xC4C3, 0xC5B5, n))   return   'n';
-    if (In(0xC5B6, 0xC5BD, n))   return   'o';
-    if (In(0xC5BE, 0xC6D9, n))   return   'p';
-    if (In(0xC6DA, 0xC8BA, n))   return   'q';
-    if (In(0xC8BB, 0xC8F5, n))   return   'r';
-    if (In(0xC8F6, 0xCBF0, n))   return   's';
-    if (In(0xCBFA, 0xCDD9, n))   return   't';
-    if (In(0xCDDA, 0xCEF3, n))   return   'w';
-    if (In(0xCEF4, 0xD188, n))   return   'x';
-    if (In(0xD1B9, 0xD4D0, n))   return   'y';
-    if (In(0xD4D1, 0xD7F9, n))   return   'z';
-    return   '\0';
-}
-bool FastBin::In(wchar_t start, wchar_t end, wchar_t code)
-{
-    if (code >= start   &&   code <= end)
-    {
-        return   true;
-    }
-    return   false;
-}
-
+#include "FastBin.h"
 
 QString FastBin::topy(QString qsChinese){
-        std::string sChinese = qsChinese.toLocal8Bit().data();
-        char chr[3];
-        wchar_t   wchr = 0;
-        char*   buff = new   char[sChinese.length() / 2];
-        memset(buff, 0x00, sizeof(char)*sChinese.length() / 2 + 1);
-        for (int i = 0, j = 0; i < (sChinese.length() / 2); ++i)
-        {
-            memset(chr, 0x00, sizeof(chr));
-            chr[0] = sChinese[j++];
-            chr[1] = sChinese[j++];
-            chr[2] = '\0';
-            //   单个字符的编码   如：'我'   =   0xced2
-            wchr = 0;
-            wchr = (chr[0] & 0xff) << 8;
-            wchr |= (chr[1] & 0xff);
-            buff[i] = convert(wchr);
+    QByteArray ba = qsChinese.toLocal8Bit();
+    const char* strChs = ba.data();
+    static int li_SecPosValue[] = {
+       1601, 1637, 1833, 2078, 2274, 2302, 2433, 2594, 2787, 3106, 3212,
+       3472, 3635, 3722, 3730, 3858, 4027, 4086, 4390, 4558, 4684, 4925, 5249
+      };
+      static char* lc_FirstLetter[] = {
+       "A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "O",
+       "P", "Q", "R", "S", "T", "W", "X", "Y", "Z"
+      };
+      static char* ls_SecondSecTable =
+       "CJWGNSPGCGNE[Y[BTYYZDXYKYGT[JNNJQMBSGZSCYJSYY[PGKBZGY[YWJKGKLJYWKPJQHY[W[DZLSGMRYPYWWCCKZNKYYGTTNJJNYKKZYTCJNMCYLQLYPYQFQRPZSLWBTGKJFYXJWZLTBNCXJJJJTXDTTSQZYCDXXHGCK[PHFFSS[YBGXLPPBYLL[HLXS[ZM[JHSOJNGHDZQYKLGJHSGQZHXQGKEZZWYSCSCJXYEYXADZPMDSSMZJZQJYZC[J[WQJBYZPXGZNZCPWHKXHQKMWFBPBYDTJZZKQHY"
+       "LYGXFPTYJYYZPSZLFCHMQSHGMXXSXJ[[DCSBBQBEFSJYHXWGZKPYLQBGLDLCCTNMAYDDKSSNGYCSGXLYZAYBNPTSDKDYLHGYMYLCXPY[JNDQJWXQXFYYFJLEJPZRXCCQWQQSBNKYMGPLBMJRQCFLNYMYQMSQYRBCJTHZTQFRXQHXMJJCJLXQGJMSHZKBSWYEMYLTXFSYDSWLYCJQXSJNQBSCTYHBFTDCYZDJWYGHQFRXWCKQKXEBPTLPXJZSRMEBWHJLBJSLYYSMDXLCLQKXLHXJRZJMFQHXHWY"
+       "WSBHTRXXGLHQHFNM[YKLDYXZPYLGG[MTCFPAJJZYLJTYANJGBJPLQGDZYQYAXBKYSECJSZNSLYZHSXLZCGHPXZHZNYTDSBCJKDLZAYFMYDLEBBGQYZKXGLDNDNYSKJSHDLYXBCGHXYPKDJMMZNGMMCLGWZSZXZJFZNMLZZTHCSYDBDLLSCDDNLKJYKJSYCJLKWHQASDKNHCSGANHDAASHTCPLCPQYBSDMPJLPZJOQLCDHJJYSPRCHN[NNLHLYYQYHWZPTCZGWWMZFFJQQQQYXACLBHKDJXDGMMY"
+       "DJXZLLSYGXGKJRYWZWYCLZMSSJZLDBYD[FCXYHLXCHYZJQ[[QAGMNYXPFRKSSBJLYXYSYGLNSCMHZWWMNZJJLXXHCHSY[[TTXRYCYXBYHCSMXJSZNPWGPXXTAYBGAJCXLY[DCCWZOCWKCCSBNHCPDYZNFCYYTYCKXKYBSQKKYTQQXFCWCHCYKELZQBSQYJQCCLMTHSYWHMKTLKJLYCXWHEQQHTQH[PQ[QSCFYMNDMGBWHWLGSLLYSDLMLXPTHMJHWLJZYHZJXHTXJLHXRSWLWZJCBXMHZQXSDZP"
+       "MGFCSGLSXYMJSHXPJXWMYQKSMYPLRTHBXFTPMHYXLCHLHLZYLXGSSSSTCLSLDCLRPBHZHXYYFHB[GDMYCNQQWLQHJJ[YWJZYEJJDHPBLQXTQKWHLCHQXAGTLXLJXMSL[HTZKZJECXJCJNMFBY[SFYWYBJZGNYSDZSQYRSLJPCLPWXSDWEJBJCBCNAYTWGMPAPCLYQPCLZXSBNMSGGFNZJJBZSFZYNDXHPLQKZCZWALSBCCJX[YZGWKYPSGXFZFCDKHJGXDLQFSGDSLQWZKXTMHSBGZMJZRGLYJB"
+       "PMLMSXLZJQQHZYJCZYDJWBMYKLDDPMJEGXYHYLXHLQYQHKYCWCJMYYXNATJHYCCXZPCQLBZWWYTWBQCMLPMYRJCCCXFPZNZZLJPLXXYZTZLGDLDCKLYRZZGQTGJHHGJLJAXFGFJZSLCFDQZLCLGJDJCSNZLLJPJQDCCLCJXMYZFTSXGCGSBRZXJQQCTZHGYQTJQQLZXJYLYLBCYAMCSTYLPDJBYREGKLZYZHLYSZQLZNWCZCLLWJQJJJKDGJZOLBBZPPGLGHTGZXYGHZMYCNQSYCYHBHGXKAMTX"
+       "YXNBSKYZZGJZLQJDFCJXDYGJQJJPMGWGJJJPKQSBGBMMCJSSCLPQPDXCDYYKY[CJDDYYGYWRHJRTGZNYQLDKLJSZZGZQZJGDYKSHPZMTLCPWNJAFYZDJCNMWESCYGLBTZCGMSSLLYXQSXSBSJSBBSGGHFJLYPMZJNLYYWDQSHZXTYYWHMZYHYWDBXBTLMSYYYFSXJC[DXXLHJHF[SXZQHFZMZCZTQCXZXRTTDJHNNYZQQMNQDMMG[YDXMJGDHCDYZBFFALLZTDLTFXMXQZDNGWQDBDCZJDXBZGS"
+       "QQDDJCMBKZFFXMKDMDSYYSZCMLJDSYNSBRSKMKMPCKLGDBQTFZSWTFGGLYPLLJZHGJ[GYPZLTCSMCNBTJBQFKTHBYZGKPBBYMTDSSXTBNPDKLEYCJNYDDYKZDDHQHSDZSCTARLLTKZLGECLLKJLQJAQNBDKKGHPJTZQKSECSHALQFMMGJNLYJBBTMLYZXDCJPLDLPCQDHZYCBZSCZBZMSLJFLKRZJSNFRGJHXPDHYJYBZGDLQCSEZGXLBLGYXTWMABCHECMWYJYZLLJJYHLG[DJLSLYGKDZPZXJ"
+       "YYZLWCXSZFGWYYDLYHCLJSCMBJHBLYZLYCBLYDPDQYSXQZBYTDKYXJY[CNRJMPDJGKLCLJBCTBJDDBBLBLCZQRPPXJCJLZCSHLTOLJNMDDDLNGKAQHQHJGYKHEZNMSHRP[QQJCHGMFPRXHJGDYCHGHLYRZQLCYQJNZSQTKQJYMSZSWLCFQQQXYFGGYPTQWLMCRNFKKFSYYLQBMQAMMMYXCTPSHCPTXXZZSMPHPSHMCLMLDQFYQXSZYYDYJZZHQPDSZGLSTJBCKBXYQZJSGPSXQZQZRQTBDKYXZK"
+       "HHGFLBCSMDLDGDZDBLZYYCXNNCSYBZBFGLZZXSWMSCCMQNJQSBDQSJTXXMBLTXZCLZSHZCXRQJGJYLXZFJPHYMZQQYDFQJJLZZNZJCDGZYGCTXMZYSCTLKPHTXHTLBJXJLXSCDQXCBBTJFQZFSLTJBTKQBXXJJLJCHCZDBZJDCZJDCPRNPQCJPFCZLCLZXZDMXMPHJSGZGSZZQLYLWTJPFSYASMCJBTZKYCWMYTCSJJLJCQLWZMALBXYFBPNLSFHTGJWEJJXXGLLJSTGSHJQLZFKCGNNNSZFDEQ"
+       "FHBSAQTGYLBXMMYGSZLDYDQMJJRGBJTKGDHGKBLQKBDMBYLXWCXYTTYBKMRTJZXQJBHLMHMJJZMQASLDCYXYQDLQCAFYWYXQHZ";
+      std::string result;
+      int H = 0;
+      int L = 0;
+      int W = 0;
+      UINT stringlen = strlen(strChs);
+      for (UINT i = 0; i < stringlen; i++) {
+       H = (UCHAR) (strChs[i + 0]);
+       L = (UCHAR) (strChs[i + 1]);
+       if (H < 0xA1 || L < 0xA1) {
+        result += strChs[i];
+        continue;
+       } else {
+        W = (H - 160) * 100 + L - 160;
+       }
+       if (W > 1600 && W < 5590) {
+        for (int j = 22; j >= 0; j--) {
+         if (W >= li_SecPosValue[j]) {
+          result += lc_FirstLetter[j];
+          i ++;
+          break;
+         }
         }
-        return QString(QLatin1String(buff));
+        continue;
+       } else {
+        i++;
+        W = (H - 160 - 56) * 94 + L - 161;
+        if (W >= 0 && W <= 3007)
+         result += ls_SecondSecTable[W];
+        else {
+         result += (char) H;
+         result += (char) L;
+        }
+       }
+      }
+      std::string resStr(result);
+      return QString::fromStdString(resStr);
 }
 
-void FastBin::searchDir(QString sPath){
-
-}
-
-bool FastBin::LoadPro(){
-    QString Path("C:\\ProgramData\\Microsoft\\Windows\\Start Menu");
-    QStringList fileList;
-    QDir dir(Path);
+bool FastBin::searchDir(QString sPath){
+    QDir dir(sPath);
     if (!dir.exists()) return false;
     dir.setFilter(QDir::Dirs|QDir::Files);
     //dir.setSorting(QDir::DirsFirst);
@@ -86,18 +79,58 @@ bool FastBin::LoadPro(){
         bool bisDir=fileInfo.isDir();
         if(bisDir) {
             qDebug()<<"filedir="<<fileInfo.fileName();
+            this->searchDir(sPath + "\\" + fileInfo.fileName());
         }
         else{
-            QString currentFileName=fileInfo.fileName();
-            if(true){
-                fileList<<currentFileName;
+            QString currentFileName=fileInfo.fileName(); //用于与path结合
+            QString baceFileName = fileInfo.baseName();  //不含后缀的文件名
+            {
                 qDebug()<<"filelist sort="<<currentFileName;
+                SoftInfo f_si;
+                f_si.name = baceFileName;
+                f_si.path = sPath + "\\" + currentFileName;
+                QFileInfo file_info(f_si.path);
+                QFileIconProvider icon_provider;
+                f_si.icon = icon_provider.icon(file_info);
+                this->m_SoftInfo.push_back(f_si);
                 filecont++;
             }
         }
         i++;
     }while(i<list.size());
 
+    for(int i=0;i<this->m_SoftInfo.size();i++){
+        qDebug()<<i<<this->m_SoftInfo[i].name;
+        qDebug()<<i<<this->m_SoftInfo[i].path;
+    }
+
     return true;
 }
 
+//LoadProgram
+bool FastBin::LoadPro(){
+    QString Path("C:\\ProgramData\\Microsoft\\Windows\\Start Menu");
+    if(this->searchDir(Path)) return true;
+    else return false;
+}
+
+//FindProgram
+std::vector<SoftInfo> FastBin::findPro(QString ProName){
+    std::vector<SoftInfo> res;
+    qDebug()<<this->m_SoftInfo.size();
+    for(int i=0;i<this->m_SoftInfo.size();i++){
+        QString pyProName(this->topy(this->m_SoftInfo[i].name));
+        qDebug()<<m_SoftInfo[i].name;
+        qDebug()<<pyProName;
+        if(pyProName.indexOf(ProName,0,Qt::CaseInsensitive) != -1){
+            res.push_back(this->m_SoftInfo[i]);
+        }
+    }
+    return res;
+}
+
+bool FastBin::runPro(QString Path){
+    Path = QString("file:///") + Path;
+    bool is_open = QDesktopServices::openUrl(QUrl(Path, QUrl::TolerantMode));
+    return is_open;
+}

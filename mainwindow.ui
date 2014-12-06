@@ -10,14 +10,14 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>112</height>
+    <height>178</height>
    </rect>
   </property>
   <property name="contextMenuPolicy">
    <enum>Qt::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>FastRun</string>
   </property>
   <property name="windowIcon">
    <iconset resource="ic.qrc">
@@ -30,7 +30,7 @@
       <x>10</x>
       <y>10</y>
       <width>381</width>
-      <height>41</height>
+      <height>40</height>
      </rect>
     </property>
     <property name="font">
@@ -48,8 +48,20 @@
       <x>10</x>
       <y>60</y>
       <width>381</width>
-      <height>41</height>
+      <height>40</height>
      </rect>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
+    </property>
+    <property name="gridSize">
+     <size>
+      <width>0</width>
+      <height>40</height>
+     </size>
     </property>
    </widget>
   </widget>

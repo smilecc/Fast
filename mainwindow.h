@@ -28,6 +28,7 @@ private:
     bool ishide;
     bool isExit;
     FastBin m_fb;
+    std::vector<SoftInfo> m_proList;
 private slots:
   void onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reason);
   void on_actionExit_triggered();
@@ -35,6 +36,8 @@ private slots:
   void on_actionDisplay_triggered();
 
   void on_lineEdit_cursorPositionChanged(int arg1, int arg2);
+  bool eventFilter(QObject *,QEvent *);
+  void on_lineEdit_returnPressed();
 
 protected:
   void closeEvent(QCloseEvent *event);
