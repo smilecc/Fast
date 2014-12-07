@@ -1,6 +1,7 @@
 #include "settingdialog.h"
 #include "ui_settingdialog.h"
 #include "mainwindow.h"
+#include <QMessageBox>
 #include <QDebug>
 
 SettingDialog::SettingDialog(Ui::SettingDialog *fromMainUi,QWidget *parent) :
@@ -14,6 +15,7 @@ SettingDialog::SettingDialog(Ui::SettingDialog *fromMainUi,QWidget *parent) :
 
     //初始化AddPro窗口
     this->m_pAddProDialog = new AddProDialog(&aWnd,this);
+    QObject::connect(aWnd.commitButton,SIGNAL(clicked()),this,SLOT(on_addPro_commitButton_clicked()));
 
 }
 
@@ -46,6 +48,7 @@ void SettingDialog::on_cancleButton_clicked()
 void SettingDialog::on_addProButton_clicked()
 {
     qDebug()<<"addProButton_clicked";
+    this->m_pAddProDialog->clearEdit();
     this->m_pAddProDialog->show();
 }
 
@@ -63,3 +66,15 @@ void SettingDialog::on_saveButton_clicked()
     qDebug()<<"save";
 }
 
+void SettingDialog::on_addPro_commitButton_clicked(){
+    qDebug()<<"on_addPro_commitButton_clicked";
+    if(aWnd.proPathEdit->text() == ""){
+        QMessageBox::information(this, "ERROR", "The Program/File edit is empty!", QMessageBox::Ok);
+        return;
+    }
+    m_pAddProDialog->hide();
+    int tableRow = ui->proTableWidget->rowCount();
+    ui->proTableWidget->setRowCount(tableRow+1);
+    ui->proTableWidget->setItem(tableRow,0,new QTableWidgetItem(aWnd.proNameEdit->text()));
+    ui->proTableWidget->setItem(tableRow,1,new QTableWidgetItem(aWnd.proPathEdit->text()));
+}

@@ -12,3 +12,13 @@ AddProDialog::~AddProDialog()
 {
     //delete ui;
 }
+
+void AddProDialog::clearEdit(){
+    ui->proNameEdit->setText("");
+    ui->proPathEdit->setText("");
+}
+
+void AddProDialog::on_cancleButton_clicked()
+{
+    this->hide();
+}

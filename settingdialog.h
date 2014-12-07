@@ -33,6 +33,7 @@ private slots:
   void on_addProButton_clicked();
   void on_deleteProButton_2_clicked();
   void on_saveButton_clicked();
+  void on_addPro_commitButton_clicked();
 };
 
 #endif // SETTINGDIALOG_H
