@@ -85,7 +85,7 @@ bool FastBin::searchDir(QString sPath,bool uninstall){
             QString baceFileName = fileInfo.baseName();  //不含后缀的文件名
             QString pyFileName(this->topy(baceFileName));
             if(uninstall){
-                if(pyFileName.indexOf("xz",0,Qt::CaseInsensitive)!=-1 || pyFileName.indexOf("uninstall",0,Qt::CaseInsensitive)!=-1){
+                if(baceFileName.indexOf("卸载",0,Qt::CaseInsensitive)!=-1 || pyFileName.indexOf("uninstall",0,Qt::CaseInsensitive)!=-1){
                     i++;
                     continue;
                 }
