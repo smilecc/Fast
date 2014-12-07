@@ -102,6 +102,7 @@ bool FastBin::searchDir(QString sPath){
     for(int i=0;i<this->m_SoftInfo.size();i++){
         qDebug()<<i<<this->m_SoftInfo[i].name;
         qDebug()<<i<<this->m_SoftInfo[i].path;
+
     }
 
     return true;

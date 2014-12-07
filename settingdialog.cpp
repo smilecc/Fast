@@ -33,9 +33,8 @@ void SettingDialog::on_saveButton_clicked()
     qDebug()<<"save";
 }
 
-
-
 void SettingDialog::on_cancleButton_clicked()
 {
     qDebug()<<"cancle";
+    this->close();
 }

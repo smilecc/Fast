@@ -12,7 +12,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ishide(false),isExit(false)
 {
     ui->setupUi(this);
-    //初始化界面
+    //初始化主界面
+
+    //初始化设置界面
+    this->m_pSettingWnd = new SettingDialog(this);
+    Ui::SettingDialog sWnd;
+    sWnd.setupUi(m_pSettingWnd);
+    sWnd.tableWidget->setColumnWidth(0,180);//设置列宽
+    sWnd.tableWidget->setColumnWidth(1,400);
+    sWnd.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);//设置不能修改
+    sWnd.tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);//设置整行选择
+    sWnd.tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);//设置只能单行选择
+    QObject::connect(sWnd.cancleButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_cancleButton_clicked()));
+    QObject::connect(sWnd.saveButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_saveButton_clicked()));
+
 
     trayicon = new QSystemTrayIcon(this);
     //创建QIcon对象，参数是图标资源，值为项目的资源文件中图标的地址
@@ -40,14 +53,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason)));
 
     m_fb.LoadPro(); //初始化载入 LoadProgram
+    for(int i=0;i<this->m_fb.m_SoftInfo.size();i++){
+        sWnd.tableWidget->setRowCount(sWnd.tableWidget->rowCount()+1);
+        sWnd.tableWidget->setItem(i,0,new QTableWidgetItem(m_fb.m_SoftInfo[i].icon,m_fb.m_SoftInfo[i].name));
+        sWnd.tableWidget->setItem(i,1,new QTableWidgetItem(m_fb.m_SoftInfo[i].path));
+
+    }
     trayicon->showMessage("Loading...", "Loaded successfully", QSystemTrayIcon::Information, 2000);
     ui->lineEdit->installEventFilter(this); //绑定事件过滤器
-
-    this->m_pSettingWnd = new SettingDialog(this);
-    Ui::SettingDialog sWnd;
-    sWnd.setupUi(m_pSettingWnd);
-    QObject::connect(sWnd.cancleButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_cancleButton_clicked()));
-    QObject::connect(sWnd.saveButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_saveButton_clicked()));
 }
 
 MainWindow::~MainWindow()
