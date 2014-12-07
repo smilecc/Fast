@@ -61,7 +61,7 @@ QString FastBin::topy(QString qsChinese){
       return QString::fromStdString(resStr);
 }
 
-bool FastBin::searchDir(QString sPath){
+bool FastBin::searchDir(QString sPath,bool uninstall){
     QDir dir(sPath);
     if (!dir.exists()) return false;
     dir.setFilter(QDir::Dirs|QDir::Files);
@@ -79,16 +79,24 @@ bool FastBin::searchDir(QString sPath){
         bool bisDir=fileInfo.isDir();
         if(bisDir) {
             qDebug()<<"filedir="<<fileInfo.fileName();
-            this->searchDir(sPath + "\\" + fileInfo.fileName());
+            this->searchDir(sPath + "\\" + fileInfo.fileName(),uninstall);
         }
         else{
-            QString currentFileName=fileInfo.fileName(); //用于与path结合
             QString baceFileName = fileInfo.baseName();  //不含后缀的文件名
+            QString pyFileName(this->topy(baceFileName));
+            if(uninstall){
+                if(pyFileName.indexOf("xz",0,Qt::CaseInsensitive)!=-1 || pyFileName.indexOf("uninstall",0,Qt::CaseInsensitive)!=-1){
+                    i++;
+                    continue;
+                }
+            }
+            QString currentFileName=fileInfo.fileName(); //用于与path结合
             {
                 qDebug()<<"filelist sort="<<currentFileName;
                 SoftInfo f_si;
                 f_si.name = baceFileName;
                 f_si.path = sPath + "\\" + currentFileName;
+                f_si.pyname = pyFileName;
                 QFileInfo file_info(f_si.path);
                 QFileIconProvider icon_provider;
                 f_si.icon = icon_provider.icon(file_info);
@@ -109,9 +117,9 @@ bool FastBin::searchDir(QString sPath){
 }
 
 //LoadProgram
-bool FastBin::LoadPro(QString Path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu",bool searchFromLnk = true){
+bool FastBin::LoadPro(QString Path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu",bool searchFromLnk = true,bool uninstall=true){
     if(searchFromLnk){
-        if(this->searchDir(Path)) return true;
+        if(this->searchDir(Path,uninstall)) return true;
         else return false;
     }
 
@@ -120,12 +128,8 @@ bool FastBin::LoadPro(QString Path = "C:\\ProgramData\\Microsoft\\Windows\\Start
 //FindProgram
 std::vector<SoftInfo> FastBin::findPro(QString ProName){
     std::vector<SoftInfo> res;
-    qDebug()<<this->m_SoftInfo.size();
     for(int i=0;i<this->m_SoftInfo.size();i++){
-        QString pyProName(this->topy(this->m_SoftInfo[i].name));
-        qDebug()<<m_SoftInfo[i].name;
-        qDebug()<<pyProName;
-        if(pyProName.indexOf(ProName,0,Qt::CaseInsensitive) != -1){
+        if(m_SoftInfo[i].pyname.indexOf(ProName,0,Qt::CaseInsensitive) != -1){
             res.push_back(this->m_SoftInfo[i]);
         }
     }

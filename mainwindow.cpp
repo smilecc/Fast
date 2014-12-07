@@ -18,13 +18,20 @@ MainWindow::MainWindow(QWidget *parent) :
     //初始化设置界面
     this->m_pSettingWnd = new SettingDialog(this);
     sWnd.setupUi(m_pSettingWnd);
+
+    //初始化table
     sWnd.tableWidget->setColumnWidth(0,180);//设置列宽
     sWnd.tableWidget->setColumnWidth(1,400);
     sWnd.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);//设置不能修改
     sWnd.tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);//设置整行选择
     sWnd.tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);//设置只能单行选择
+
+    //设置 设置界面的选项
     sWnd.lnkSeachCheckBox->setChecked(settings->value("SeachFromLnk").value<bool>());
     sWnd.lnkPathEdit->setText(settings->value("LnkPath").value<QString>());
+    sWnd.uninstallCheckBox->setChecked(settings->value("Uninstall").value<bool>());
+
+    //绑定槽函数
     QObject::connect(sWnd.cancleButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_cancleButton_clicked()));
     QObject::connect(sWnd.saveButton, SIGNAL(clicked()), this , SLOT(on_saveButton_clicked()));
     QObject::connect(sWnd.addProButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_addProButton_clicked()));
@@ -56,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //为系统托盘绑定单击信号的槽 即图标激活时
     connect(trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason)));
 
-    m_fb.LoadPro(settings->value("LnkPath").value<QString>(),settings->value("SeachFromLnk").value<bool>()); //初始化载入 LoadProgram
+    m_fb.LoadPro(settings->value("LnkPath").value<QString>(),settings->value("SeachFromLnk").value<bool>(),settings->value("Uninstall").value<bool>()); //初始化载入 LoadProgram
     for(int i=0;i<this->m_fb.m_SoftInfo.size();i++){
         sWnd.tableWidget->setRowCount(sWnd.tableWidget->rowCount()+1);
         sWnd.tableWidget->setItem(i,0,new QTableWidgetItem(m_fb.m_SoftInfo[i].icon,m_fb.m_SoftInfo[i].name));
@@ -209,6 +216,7 @@ void MainWindow::on_saveButton_clicked()
 {
     settings->setValue("SeachFromLnk",sWnd.lnkSeachCheckBox->isChecked());
     settings->setValue("LnkPath",sWnd.lnkPathEdit->text());
+    settings->setValue("Uninstall",sWnd.uninstallCheckBox->isChecked());
     this->m_pSettingWnd->hide();
     qDebug()<<"save";
 }

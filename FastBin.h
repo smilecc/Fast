@@ -22,17 +22,18 @@
 struct SoftInfo{
     QString name;
     QString path;
+    QString pyname;
     QIcon icon;
 };
 
 class FastBin{
 public:
-    bool LoadPro(QString Path, bool searchFromLnk);
+    bool LoadPro(QString Path, bool searchFromLnk, bool uninstall);
     bool runPro(QString Path);
     QString topy(QString qsChinese);
     std::vector<SoftInfo> findPro(QString ProName);
 private:
-    bool searchDir(QString sPath);
+    bool searchDir(QString sPath, bool uninstall);
 public:
     std::vector<SoftInfo> m_SoftInfo; //用于存储软件的信息
 };

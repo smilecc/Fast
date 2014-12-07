@@ -130,6 +130,19 @@
         <bool>false</bool>
        </property>
       </widget>
+      <widget class="QCheckBox" name="uninstallCheckBox">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>100</y>
+         <width>271</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>过滤名称中有”卸载“和&quot;uninstall&quot;的程序</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
