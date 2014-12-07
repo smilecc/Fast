@@ -28,10 +28,7 @@ void SettingDialog::closeEvent(QCloseEvent *event)
 
 }
 
-void SettingDialog::on_saveButton_clicked()
-{
-    qDebug()<<"save";
-}
+
 
 void SettingDialog::on_cancleButton_clicked()
 {

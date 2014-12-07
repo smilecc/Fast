@@ -14,6 +14,8 @@
 #include <QFileIconProvider>
 #include <QDir>
 #include <QDesktopServices>
+#include <QSettings>
+
 
 #define MAX_BUF 1024
 
@@ -25,7 +27,7 @@ struct SoftInfo{
 
 class FastBin{
 public:
-    bool LoadPro();
+    bool LoadPro(QString Path, bool searchFromLnk);
     bool runPro(QString Path);
     QString topy(QString qsChinese);
     std::vector<SoftInfo> findPro(QString ProName);

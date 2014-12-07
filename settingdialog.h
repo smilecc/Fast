@@ -2,6 +2,7 @@
 #define SETTINGDIALOG_H
 
 #include <QDialog>
+#include <QSettings>
 #include <QCloseEvent>
 #include <QAbstractButton>
 
@@ -22,7 +23,6 @@ private:
 protected:
   void closeEvent(QCloseEvent *event);
 private slots:
-  void on_saveButton_clicked();
   void on_cancleButton_clicked();
   void on_addProButton_clicked();
   void on_deleteProButton_2_clicked();

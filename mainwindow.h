@@ -7,6 +7,7 @@
 #include <QCloseEvent>
 #include "FastBin.h"
 #include "settingdialog.h"
+#include "ui_settingdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +21,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool isExit;
+    QSettings *settings;
 public slots:
 
     void activated();
@@ -30,6 +32,7 @@ private:
     FastBin m_fb;
     std::vector<SoftInfo> m_proList;
     SettingDialog *m_pSettingWnd;
+    Ui::SettingDialog sWnd;
 private slots:
   void onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reason);
   void on_actionExit_triggered();
@@ -41,7 +44,7 @@ private slots:
   void on_lineEdit_returnPressed();
 
   void on_actionSettings_triggered();
-
+  void on_saveButton_clicked();
 protected:
   void closeEvent(QCloseEvent *event);
 private:

@@ -79,7 +79,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
@@ -109,6 +109,9 @@
        </property>
       </widget>
       <widget class="QCheckBox" name="lnkSeachCheckBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>30</x>
@@ -119,6 +122,12 @@
        </property>
        <property name="text">
         <string>是否检索位于菜单中的快捷方式</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <property name="tristate">
+        <bool>false</bool>
        </property>
       </widget>
      </widget>
@@ -179,7 +188,7 @@
   <widget class="QPushButton" name="saveButton">
    <property name="geometry">
     <rect>
-     <x>430</x>
+     <x>530</x>
      <y>370</y>
      <width>75</width>
      <height>23</height>
@@ -192,7 +201,7 @@
   <widget class="QPushButton" name="cancleButton">
    <property name="geometry">
     <rect>
-     <x>510</x>
+     <x>610</x>
      <y>370</y>
      <width>75</width>
      <height>23</height>

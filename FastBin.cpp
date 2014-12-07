@@ -109,10 +109,12 @@ bool FastBin::searchDir(QString sPath){
 }
 
 //LoadProgram
-bool FastBin::LoadPro(){
-    QString Path("C:\\ProgramData\\Microsoft\\Windows\\Start Menu");
-    if(this->searchDir(Path)) return true;
-    else return false;
+bool FastBin::LoadPro(QString Path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu",bool searchFromLnk = true){
+    if(searchFromLnk){
+        if(this->searchDir(Path)) return true;
+        else return false;
+    }
+
 }
 
 //FindProgram
