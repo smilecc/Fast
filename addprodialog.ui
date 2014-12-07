@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>添加新的程序</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="ic.qrc">
+    <normaloff>:/ic/f.png</normaloff>:/ic/f.png</iconset>
   </property>
   <widget class="QLineEdit" name="proNameEdit">
    <property name="geometry">
@@ -86,6 +90,8 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="ic.qrc"/>
+ </resources>
  <connections/>
 </ui>

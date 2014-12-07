@@ -97,9 +97,7 @@ bool FastBin::searchDir(QString sPath,bool uninstall){
                 f_si.name = baceFileName;
                 f_si.path = sPath + "\\" + currentFileName;
                 f_si.pyname = pyFileName;
-                QFileInfo file_info(f_si.path);
-                QFileIconProvider icon_provider;
-                f_si.icon = icon_provider.icon(file_info);
+                f_si.icon = this->getIconFromFile(f_si.path);
                 this->m_SoftInfo.push_back(f_si);
                 filecont++;
             }
@@ -119,9 +117,21 @@ bool FastBin::searchDir(QString sPath,bool uninstall){
 //LoadProgram
 bool FastBin::LoadPro(QString Path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu",bool searchFromLnk = true,bool uninstall=true){
     if(searchFromLnk){
-        if(this->searchDir(Path,uninstall)) return true;
-        else return false;
+        if(this->searchDir(Path,uninstall) == false) return false;
     }
+    QSettings proListSettings("ProListConfig.ini", QSettings::IniFormat);
+    int rowCount = proListSettings.value("Row").value<int>();
+    qDebug()<<rowCount;
+    for(int i=0;i<rowCount;i++){
+        qDebug()<<i;
+        SoftInfo f_si;
+        f_si.name = proListSettings.value(QString(i)+"name").value<QString>();
+        f_si.path = proListSettings.value(QString(i)+"path").value<QString>();
+        f_si.pyname = this->topy(f_si.name);
+        f_si.icon = this->getIconFromFile(f_si.path);
+        this->m_SoftInfo.push_back(f_si);
+    }
+    return true;
 
 }
 
@@ -140,4 +150,10 @@ bool FastBin::runPro(QString Path){
     Path = QString("file:///") + Path;
     bool is_open = QDesktopServices::openUrl(QUrl(Path, QUrl::TolerantMode));
     return is_open;
+}
+
+QIcon FastBin::getIconFromFile(QString Path){
+    QFileInfo file_info(Path);
+    QFileIconProvider icon_provider;
+    return icon_provider.icon(file_info);
 }

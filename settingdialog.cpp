@@ -23,6 +23,19 @@ SettingDialog::~SettingDialog()
 {
     //delete ui;
 }
+//初始化窗口中的项目
+void SettingDialog::initWnd(){
+    ui->lnkSeachCheckBox->setChecked(proSettings->value("SeachFromLnk").value<bool>());
+    ui->lnkPathEdit->setText(proSettings->value("LnkPath").value<QString>());
+    ui->uninstallCheckBox->setChecked(proSettings->value("Uninstall").value<bool>());
+    int rowCount = this->proListSettings->value("Row").value<int>();
+    for(int i=0;i<rowCount;i++){
+        ui->proTableWidget->setRowCount(i+1);
+        ui->proTableWidget->setItem(i,0,new QTableWidgetItem(this->proListSettings->value(QString(i)+"name").value<QString>()));
+        ui->proTableWidget->setItem(i,1,new QTableWidgetItem(this->proListSettings->value(QString(i)+"path").value<QString>()));
+    }
+}
+
 
 //用于响应程序被关闭的事件
 void SettingDialog::closeEvent(QCloseEvent *event)
@@ -32,6 +45,7 @@ void SettingDialog::closeEvent(QCloseEvent *event)
       return;
   }
     qDebug()<<"setting wnd close";
+    this->initWnd();
     this->hide();
     event->ignore();
 
@@ -55,6 +69,7 @@ void SettingDialog::on_addProButton_clicked()
 void SettingDialog::on_deleteProButton_2_clicked()
 {
     qDebug()<<"deleteProButton_2_clicked";
+    ui->proTableWidget->removeRow(ui->proTableWidget->currentRow());
 }
 
 void SettingDialog::on_saveButton_clicked()
@@ -62,6 +77,11 @@ void SettingDialog::on_saveButton_clicked()
     this->proSettings->setValue("SeachFromLnk",ui->lnkSeachCheckBox->isChecked());
     this->proSettings->setValue("LnkPath",ui->lnkPathEdit->text());
     this->proSettings->setValue("Uninstall",ui->uninstallCheckBox->isChecked());
+    this->proListSettings->setValue("Row",ui->proTableWidget->rowCount());
+    for(int i=0;i<ui->proTableWidget->rowCount();i++){
+        this->proListSettings->setValue(QString(i)+"name",ui->proTableWidget->item(i,0)->text());
+        this->proListSettings->setValue(QString(i)+"path",ui->proTableWidget->item(i,1)->text());
+    }
     this->hide();
     qDebug()<<"save";
 }

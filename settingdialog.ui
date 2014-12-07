@@ -79,7 +79,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
@@ -146,7 +146,7 @@
      </widget>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
-       <string>快捷方式</string>
+       <string>所有程序</string>
       </attribute>
       <widget class="QTableWidget" name="tableWidget">
        <property name="geometry">
@@ -171,7 +171,7 @@
      </widget>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
-       <string>应用程序</string>
+       <string>手动添加的程序/文件</string>
       </attribute>
       <widget class="QPushButton" name="addProButton">
        <property name="geometry">

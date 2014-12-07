@@ -34,6 +34,7 @@ public:
     std::vector<SoftInfo> findPro(QString ProName);
 private:
     bool searchDir(QString sPath, bool uninstall);
+    QIcon getIconFromFile(QString Path);
 public:
     std::vector<SoftInfo> m_SoftInfo; //用于存储软件的信息
 };

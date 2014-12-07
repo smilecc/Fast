@@ -20,6 +20,7 @@ public:
     explicit SettingDialog(Ui::SettingDialog *fromMainUi,QWidget *parent = 0);
     ~SettingDialog();
     bool isExit;
+    void initWnd();
     QSettings *proSettings;
     QSettings *proListSettings;
 private:

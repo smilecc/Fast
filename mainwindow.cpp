@@ -32,9 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //设置 设置界面的选项
-    sWnd.lnkSeachCheckBox->setChecked(settings->value("SeachFromLnk").value<bool>());
-    sWnd.lnkPathEdit->setText(settings->value("LnkPath").value<QString>());
-    sWnd.uninstallCheckBox->setChecked(settings->value("Uninstall").value<bool>());
+    this->m_pSettingWnd->initWnd();
 
     //绑定槽函数
     /*
@@ -82,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete settings;
     delete m_pSettingWnd;
     delete ui;
 }
