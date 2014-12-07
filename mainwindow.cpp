@@ -1,9 +1,10 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "settingdialog.h"
+#include "ui_settingdialog.h"
 #include "QMessageBox"
 #include "QDebug"
 #include "FastBin.h"
-#include "FastBin.cpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -41,6 +42,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_fb.LoadPro(); //初始化载入 LoadProgram
     trayicon->showMessage("Loading...", "Loaded successfully", QSystemTrayIcon::Information, 2000);
     ui->lineEdit->installEventFilter(this); //绑定事件过滤器
+
+    this->m_pSettingWnd = new SettingDialog(this);
+    Ui::SettingDialog sWnd;
+    sWnd.setupUi(m_pSettingWnd);
+    QObject::connect(sWnd.cancleButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_cancleButton_clicked()));
+    QObject::connect(sWnd.saveButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_saveButton_clicked()));
 }
 
 MainWindow::~MainWindow()
@@ -103,7 +110,11 @@ void MainWindow::onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reaso
 //用于响应程序被关闭的事件
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-  if(isExit) return;
+  if(isExit) {
+      this->m_pSettingWnd->isExit=true;
+      this->m_pSettingWnd->close();
+      return;
+  }
   if(trayicon->isVisible())
   {
       this->ishide = true;
@@ -168,4 +179,11 @@ void MainWindow::on_lineEdit_returnPressed()
             hide();
         }
     }
+}
+
+void MainWindow::on_actionSettings_triggered()
+{
+    this->ishide = true;
+    this->hide();
+    this->m_pSettingWnd->show();
 }

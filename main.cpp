@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.setWindowFlags(Qt::WindowStaysOnTopHint);
     w.show();
+
     w.setGeometry(w.geometry().x(),w.geometry().y(),400,60);
 
     // 绑定快捷键

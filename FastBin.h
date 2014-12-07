@@ -5,6 +5,8 @@
 #include <QApplication>
 #include <iostream>
 #include <string>
+#include <QDebug>
+#include <QUrl>
 #include <QString>
 #include <fstream>
 #include <windows.h>

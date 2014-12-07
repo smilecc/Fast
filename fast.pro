@@ -1,4 +1,4 @@
-#-------------------------------------------------
+ #-------------------------------------------------
 #
 # Project created by QtCreator 2014-03-27T21:18:35
 #
@@ -16,14 +16,17 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     MyGlobalShortCut/MyWinEventFilter.cpp \
     MyGlobalShortCut/MyGlobalShortCut.cpp \
-    FastBin.cpp
+    FastBin.cpp \
+    settingdialog.cpp
 
 HEADERS  += mainwindow.h \
     MyGlobalShortCut/MyWinEventFilter.h \
     MyGlobalShortCut/MyGlobalShortCut.h \
-    FastBin.h
+    FastBin.h \
+    settingdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    settingdialog.ui
 
 RESOURCES += \
     ic.qrc
