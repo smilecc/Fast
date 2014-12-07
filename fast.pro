@@ -17,16 +17,19 @@ SOURCES += main.cpp\
     MyGlobalShortCut/MyWinEventFilter.cpp \
     MyGlobalShortCut/MyGlobalShortCut.cpp \
     FastBin.cpp \
-    settingdialog.cpp
+    settingdialog.cpp \
+    addprodialog.cpp
 
 HEADERS  += mainwindow.h \
     MyGlobalShortCut/MyWinEventFilter.h \
     MyGlobalShortCut/MyGlobalShortCut.h \
     FastBin.h \
-    settingdialog.h
+    settingdialog.h \
+    addprodialog.h
 
 FORMS    += mainwindow.ui \
-    settingdialog.ui
+    settingdialog.ui \
+    addprodialog.ui
 
 RESOURCES += \
     ic.qrc

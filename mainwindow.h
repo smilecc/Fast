@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 #include <QMenu>
+#include <QSettings>
 #include <QCloseEvent>
 #include "FastBin.h"
 #include "settingdialog.h"
@@ -44,7 +45,8 @@ private slots:
   void on_lineEdit_returnPressed();
 
   void on_actionSettings_triggered();
-  void on_saveButton_clicked();
+
+
 protected:
   void closeEvent(QCloseEvent *event);
 private:

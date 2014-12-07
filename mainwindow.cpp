@@ -9,15 +9,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     ishide(false),isExit(false)
 {
-    ui->setupUi(this);
     //初始化主界面
+    ui->setupUi(this);
 
     //初始化设置类
     this->settings = new QSettings ("Config.ini", QSettings::IniFormat);
 
     //初始化设置界面
-    this->m_pSettingWnd = new SettingDialog(this);
-    sWnd.setupUi(m_pSettingWnd);
+    this->m_pSettingWnd = new SettingDialog(&sWnd,this);
 
     //初始化table
     sWnd.tableWidget->setColumnWidth(0,180);//设置列宽
@@ -25,6 +24,12 @@ MainWindow::MainWindow(QWidget *parent) :
     sWnd.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);//设置不能修改
     sWnd.tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);//设置整行选择
     sWnd.tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);//设置只能单行选择
+    sWnd.proTableWidget->setColumnWidth(0,200);//设置列宽
+    sWnd.proTableWidget->setColumnWidth(1,400);
+    sWnd.proTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);//设置不能修改
+    sWnd.proTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);//设置整行选择
+    sWnd.proTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);//设置只能单行选择
+
 
     //设置 设置界面的选项
     sWnd.lnkSeachCheckBox->setChecked(settings->value("SeachFromLnk").value<bool>());
@@ -32,11 +37,12 @@ MainWindow::MainWindow(QWidget *parent) :
     sWnd.uninstallCheckBox->setChecked(settings->value("Uninstall").value<bool>());
 
     //绑定槽函数
+    /*
     QObject::connect(sWnd.cancleButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_cancleButton_clicked()));
     QObject::connect(sWnd.saveButton, SIGNAL(clicked()), this , SLOT(on_saveButton_clicked()));
     QObject::connect(sWnd.addProButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_addProButton_clicked()));
     QObject::connect(sWnd.deleteProButton_2, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_deleteProButton_2_clicked()));
-
+*/
 
     trayicon = new QSystemTrayIcon(this);
     //创建QIcon对象，参数是图标资源，值为项目的资源文件中图标的地址
@@ -76,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete m_pSettingWnd;
     delete ui;
 }
 
@@ -135,7 +142,7 @@ void MainWindow::onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reaso
 void MainWindow::closeEvent(QCloseEvent *event)
 {
   if(isExit) {
-      this->m_pSettingWnd->isExit=true;
+      this->m_pSettingWnd->isExit = true;
       this->m_pSettingWnd->close();
       return;
   }
@@ -212,11 +219,5 @@ void MainWindow::on_actionSettings_triggered()
     this->m_pSettingWnd->show();
 }
 
-void MainWindow::on_saveButton_clicked()
-{
-    settings->setValue("SeachFromLnk",sWnd.lnkSeachCheckBox->isChecked());
-    settings->setValue("LnkPath",sWnd.lnkPathEdit->text());
-    settings->setValue("Uninstall",sWnd.uninstallCheckBox->isChecked());
-    this->m_pSettingWnd->hide();
-    qDebug()<<"save";
-}
+
+

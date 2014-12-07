@@ -79,7 +79,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
@@ -146,7 +146,7 @@
      </widget>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
-       <string>应用程序</string>
+       <string>快捷方式</string>
       </attribute>
       <widget class="QTableWidget" name="tableWidget">
        <property name="geometry">
@@ -154,7 +154,7 @@
          <x>10</x>
          <y>10</y>
          <width>650</width>
-         <height>241</height>
+         <height>271</height>
         </rect>
        </property>
        <column>
@@ -168,6 +168,11 @@
         </property>
        </column>
       </widget>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>应用程序</string>
+      </attribute>
       <widget class="QPushButton" name="addProButton">
        <property name="geometry">
         <rect>
@@ -193,6 +198,26 @@
        <property name="text">
         <string>删除</string>
        </property>
+      </widget>
+      <widget class="QTableWidget" name="proTableWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>650</width>
+         <height>241</height>
+        </rect>
+       </property>
+       <column>
+        <property name="text">
+         <string>名称</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>路径</string>
+        </property>
+       </column>
       </widget>
      </widget>
     </widget>
