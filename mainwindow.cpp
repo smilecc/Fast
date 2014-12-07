@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     sWnd.tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);//设置只能单行选择
     QObject::connect(sWnd.cancleButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_cancleButton_clicked()));
     QObject::connect(sWnd.saveButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_saveButton_clicked()));
+    QObject::connect(sWnd.addProButton, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_addProButton_clicked()));
+    QObject::connect(sWnd.deleteProButton_2, SIGNAL(clicked()), m_pSettingWnd , SLOT(on_deleteProButton_2_clicked()));
 
 
     trayicon = new QSystemTrayIcon(this);

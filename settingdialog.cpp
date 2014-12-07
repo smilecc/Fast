@@ -38,3 +38,13 @@ void SettingDialog::on_cancleButton_clicked()
     qDebug()<<"cancle";
     this->close();
 }
+
+void SettingDialog::on_addProButton_clicked()
+{
+    qDebug()<<"addProButton_clicked";
+}
+
+void SettingDialog::on_deleteProButton_2_clicked()
+{
+    qDebug()<<"deleteProButton_2_clicked";
+}
